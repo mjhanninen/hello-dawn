@@ -34,7 +34,7 @@ Apparently I don't yet understand how the pattern matching wildcard works:
 Error: type error: unification error: v0 occurs in v0 Bool Bool
 ```
 
-But this works:
+But this works for conjunction:
 
 ```
 { fn and =>
@@ -42,7 +42,37 @@ But this works:
     { case T T => T }
     { case T F => F }
     { case F T => F }
-    { case F F => F } } }
+    { case F F => F }
+  }
+}
+```
+
+Let's define negation:
+
+```
+{ fn not =>
+  { match
+    { case T => F }
+    { case F => T }
+  }
+}
+```
+
+And disjunction:
+
+```
+{ fn or =>
+  { spread $x $y }
+  { $x not pop }
+  { $y not pop }
+  and not
+}
+```
+
+## Swap
+
+```
+{ fn swap => { spread $x $y } { collect $y $x } }
 ```
 
 ## Option type
